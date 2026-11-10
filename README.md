@@ -3,7 +3,7 @@ About isoduration
 
 Home: https://github.com/bolsote/isoduration
 
-Package license: MIT
+Package license: ISC
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/isoduration-feedstock/blob/master/LICENSE.txt)
 

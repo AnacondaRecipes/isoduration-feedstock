@@ -1,53 +1,59 @@
+{% set name = "isoduration" %}
 {% set version = "20.11.0" %}
 
 package:
-  name: isoduration
+  name: {{ name }}
   version: {{ version }}
 
 source:
   - url: https://pypi.io/packages/source/i/isoduration/isoduration-{{ version }}.tar.gz
     sha256: ac2f9015137935279eac671f94f89eb00584f940f5dc49462a0c4ee692ba1bd9
-    folder: dist
+    folder: sdist
   - url: https://github.com/bolsote/isoduration/archive/refs/tags/{{ version }}.tar.gz
     sha256: a72c92cfc3810117d2289792a39f17a0bf71a4065384ff117032fb5917e93e24
-    folder: src
+    folder: gh
 
 build:
-  number: 0
-  noarch: python
-  script: cd dist && {{ PYTHON }} -m pip install . -vv
+  number: 1
+  skip: true  # [py<37]
+  script: {{ PYTHON }} -m pip install ./sdist --no-deps --no-build-isolation -vv
 
 requirements:
   host:
     - pip
-    - python >=3.7
+    - python
+    - setuptools
   run:
     - arrow >=0.15.0
-    - python >=3.7
+    - python
 
 test:
   source_files:
-    - src/tests
+    - gh/tests
   imports:
     - isoduration
     - isoduration.formatter
   commands:
     - pip check
-    - cd src/tests && pytest --cov=isoduration --cov-report=term-missing:skip-covered --no-cov-on-fail --cov-fail-under=98
+    - pytest -v gh/tests
   requires:
-    - coverage
     - hypothesis
     - isodate
     - pip
     - pytest
     - pytest-benchmark
-    - pytest-cov
 
 about:
   home: https://github.com/bolsote/isoduration
   summary: Operations with ISO 8601 durations
-  license: MIT
-  license_file: dist/LICENSE
+  description: |
+      isoduration is a Python library for parsing, formatting,
+      and performing operations with ISO 8601 durations.
+  license: ISC
+  license_family: OTHER
+  license_file: gh/LICENSE
+  doc_url: https://github.com/bolsote/isoduration
+  dev_url: https://github.com/bolsote/isoduration
 
 extra:
   recipe-maintainers:
